@@ -18,11 +18,13 @@ require(envimaR)
 packagesToLoad = c("mapview","mapedit","tmap","raster", "sf","dplyr","tidyverse","RStoolbox",
                    "randomForest","e1071","caret")
 
-# append additional packages if defined by calling script
-if (exists("appendpackagesToLoad") && appendpackagesToLoad[[1]] != "") 
-{
-  projectDirList = append(packagesToLoad,appendpackagesToLoad)
-}
+
+# mandantory folder structure
+projectDirList   = c("data/",               # data folders the following are obligatory but you may add more
+                     "run/",                # folder for runtime data storage
+                     "src/",                # source code
+                     "tmp",                 # all temp stuff
+                     "doc/")                # documentation  and markdown
 
 # Now create/read root direcory, folder structure and load packages
 # NOTE rootDIR MUST be defined in calling script
@@ -49,17 +51,17 @@ rootDir = envimaR::alternativeEnvi(root_folder = rootDIR,
                                    alt_env_value = alt_env_value,
                                    alt_env_root_folder = alt_env_root_folder)
 
-# mandantory folder structure
-projectDirList   = c("data/",               # data folders the following are obligatory but you may add more
-                     "run/",                # folder for runtime data storage
-                     "src/",                # source code
-                     "tmp",                 # all temp stuff
-                     "doc/")                # documentation  and markdown
 
 # append additional folders if defined by calling script
 if (exists("appendProjectDirList") && appendProjectDirList[[1]] != "") 
 {
   projectDirList = append(projectDirList,appendProjectDirList)
+}
+
+# append additional packages if defined by calling script
+if (exists("appendpackagesToLoad") && appendpackagesToLoad[[1]] != "") 
+{
+  packagesToLoad = append(packagesToLoad,appendpackagesToLoad)
 }
 
 # call central function
@@ -76,4 +78,3 @@ envrmt = envimaR::createEnvi(root_folder = rootDir,
 raster::rasterOptions(tmpdir = envrmt$path_tmp)
 # suppres gdal warnings
 rgdal::set_thin_PROJ6_warnings(TRUE)
-
